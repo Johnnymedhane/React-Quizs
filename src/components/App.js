@@ -31,7 +31,7 @@ function reducer(state, action) {
     case "dataReceived":
       return {
         ...state,
-        questions: action.payload,
+        questions: action.payload.questions,
         status: "ready",
       };
     case "start":
@@ -98,14 +98,17 @@ export default function App() {
 
   const [{ questions, status, index, answer, points, highScore, time  }, dispatch] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
-  const maxPossiblePoints = questions.reduce((prev, curr) => prev + curr.points, 0); 
+  const maxPossiblePoints = questions?.reduce((prev, curr) => prev + curr.points, 0); 
   
 // fetch('http://localhost:9000/questions')
 
   useEffect(function () {
      fetch('https://raw.githubusercontent.com/Johnnymedhane/React-Quizs/main/data/questions.json')
       .then(res => res.json())
-      .then(data => dispatch({ type: 'dataReceived', payload: data }))
+       .then(data => {
+         dispatch({ type: 'dataReceived', payload: data })
+           console.log("Fetched questions:", data); 
+       })
       .catch(err =>dispatch({ type: 'dataFailed' }))
   }, [])
 
