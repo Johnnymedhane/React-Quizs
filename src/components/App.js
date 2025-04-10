@@ -4,7 +4,7 @@ import Main from "./main";
 import Loader from "./Loader";
 import Error from "./Error";
 import { StartScreen } from "./startScreen";
-import Qestions from "./Qestions";
+import Questions from "./Questions";
 import NextQuestion from "./NextQuestion";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
@@ -98,12 +98,12 @@ export default function App() {
 
   const [{ questions, status, index, answer, points, highScore, time  }, dispatch] = useReducer(reducer, initialState);
   const numQuestions = questions.length;
-  const maxProssiblePoints = questions.reduce((prev, curr) => prev + curr.points, 0); 
+  const maxPossiblePoints = questions.reduce((prev, curr) => prev + curr.points, 0); 
   
-
+// fetch('http://localhost:9000/questions')
 
   useEffect(function () {
-    fetch('http://localhost:9000/questions')
+     fetch('https://raw.githubusercontent.com/Johnnymedhane/React-Quizs/main/data/questions.json')
       .then(res => res.json())
       .then(data => dispatch({ type: 'dataReceived', payload: data }))
       .catch(err =>dispatch({ type: 'dataFailed' }))
@@ -123,10 +123,10 @@ export default function App() {
           <Progress index={index}
             numQuestions={numQuestions}
             points={points}
-            maxProssiblePoints={maxProssiblePoints}
+            maxPossiblePoints={maxPossiblePoints}
           answer={answer}/>
-          <Qestions
-          questions={questions[index]}
+          <Questions
+          question={questions[index]}
           answer={answer}
             dispatch={dispatch} />
           <Footer> 
@@ -136,14 +136,14 @@ export default function App() {
             <NextQuestion
               dispatch={dispatch}
               answer={answer}
-              numQustions={numQuestions}
+              numQuestions={numQuestions}
               index={index} />
           </Footer>
           </>
         )}
         {status === 'finished' &&
           <FinishScreen points={points}
-            maxPossiblePoints={maxProssiblePoints}
+            maxPossiblePoints={maxPossiblePoints}
             highScore={highScore} dispatch={dispatch}/>}
       </Main>
       
