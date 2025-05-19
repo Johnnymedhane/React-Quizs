@@ -1,11 +1,6 @@
-import { useQuiz } from "../contexts/QuizContext";
-
 function
     
-    FinishedQuiz() {
-    const {points, maxPossiblePoints, highScore, dispatch} = useQuiz()
-    
-
+    FinishedQuiz({points, maxPossiblePoints, highScore, dispatch}) {
     const avgScore = (points / maxPossiblePoints) * 100
     let emoji;
     if (avgScore === 100) emoji = '🎖️'
